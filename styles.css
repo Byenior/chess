@@ -1,11 +1,30 @@
+body{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
 th, tr {
     border: 1px solid black;
 }
 
-body{
+
+
+#chat {
     display: flex;
     justify-content: center;
+    height: 100%;
+    position: relative;
+    width: 100%;
 }
+
+#form {
+    
+    position: absolute;
+    bottom: 0;
+
+}
+
 
 table {
     width: 100%;
@@ -32,18 +51,34 @@ img {
     position: absolute;
     top: calc(50% - 40px);
     left: calc(50% - 25px);
-
-        /* background-color: red; */
-        padding: 5px;
+    padding: 5px;
 }
 
 td {
-    width: 100px !important;
+    width: 100px ;
     height: 80px;
     position: relative
-    /* display: flex; */
-    /* justify-content: center; */
+
 }
+
+@media screen and (max-width: 376px) {
+    img {
+
+        width: 40px;
+        height: 50px;
+        top: -5px;
+        left: calc(50% - 25px);
+    }
+    .corp{
+
+    }
+    td {
+        width: 50px;
+        height: 50px;
+    }
+}
+  
+
 tr {
     width: 400px;
 }
