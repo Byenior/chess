@@ -4,7 +4,9 @@ tds.forEach(td => {
 
 
         let parentTd = this.parentNode;
-        console.log(parentTd)
+        // console.log(parentTd)
+
+        
         let childrenDivs = td.querySelector('div');
         let body = childrenDivs.querySelector('img');
         let corp = childrenDivs.querySelector('div');

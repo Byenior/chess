@@ -8,7 +8,7 @@ const ngrok = require("@ngrok/ngrok");
 const app = express();
 const server = http.createServer(app);
 // const io = new Server(server);
-const link = 'https://7519-49-0-87-150.ngrok-free.app';
+const link = 'http://localhost:7777/';
 
 const io = new Server(server,{
     cors: {
@@ -31,10 +31,11 @@ app.get('/', (req, res) => {
 
 io.on("connection", (socket) => {
     console.log("A user connected");
-    socket.emit("message", "Hello from server!");
-
     socket.on("message", (msg) => {
-console.log('msg',msg)
+        console.log(msg)
+        socket.emit("message", msg);
+
+
     });
     socket.on("disconnect", () => {
         console.log("A user disconnected");

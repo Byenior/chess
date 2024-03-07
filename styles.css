@@ -16,6 +16,8 @@ th, tr {
     height: 100%;
     position: relative;
     width: 100%;
+    flex-direction: column;
+    align-items: center;
 }
 
 #form {
@@ -121,4 +123,11 @@ p:hover {
 
 .joker:hover {
     transform: scaleX(-1);
+}
+
+
+
+
+#messages {
+    padding-bottom: 50px;
 }

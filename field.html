@@ -100,7 +100,8 @@
     <div id="chat">
 
         <h1>Chat</h1>
-        <ul id="messages"></ul>
+        <ul id="messages">
+        </ul>
         <form id="form" action="">
             <input id="input" autocomplete="off" /><button>Send</button>
         </form>
@@ -113,7 +114,7 @@
 <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
 <script>
     // Connect to Socket.IO server
-    const link = 'https://7519-49-0-87-150.ngrok-free.app';
+    const link = 'http://localhost:7777/';
 
     const socket = io(link);
 //     const io = new Server(server,{
@@ -127,26 +128,17 @@ if (socket) {
 }
 
 const form = document.getElementById('form');
-    const input = document.getElementById('input');
+const input = document.getElementById('input');
 
 
-socket.on("message", (data) => {
-console.log("Message from server:", data);
 
-const messages = document.getElementById('messages');
-const item = document.createElement('li');
-item.textContent = data;
-messages.appendChild(item);
-
-window.scrollTo(0, document.body.scrollHeight);
-});
 
 
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (input.value) {
-        // console.log(input.value)
+    console.log('from input : ',input.value)
     //   socket.on('message', input.value);
     socket.emit("message", input.value);
     // socket.emit("message", "Hello from server!");
@@ -156,16 +148,31 @@ window.scrollTo(0, document.body.scrollHeight);
     }
   });
 
-
+  socket.on("message", (data) => {
+    console.log('data : ',data)
+    const messages = document.getElementById('messages');
+    const item = document.createElement('li');
+    item.textContent = data;
+    messages.appendChild(item);
+    // window.scrollTo(0, document.body.scrollHeight);
+    });
 
 
   socket.on("connection", (socket) => {
     console.log("A user connected");
     socket.emit("message", "Hello from server!");
 
-    socket.emit("message", (msg) => {
-console.log('msg',msg)
-    });
+//     socket.emit("message", (msg) => {
+// console.log('msg',msg)
+//     });
+
+
+    // socket.on("message", (msg) => {
+    //     // socket.emit("message", msg);
+    // });
+
+
+
     socket.on("disconnect", () => {
         console.log("A user disconnected");
     });
