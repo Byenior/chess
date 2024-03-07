@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+
+    <table border="1">
+        <tbody>
+            <tr>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/12.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/12.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/13.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/13.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/11.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/14.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/15.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/14.png" draggable="true" ondragstart="drag(event)"></td>
+            </tr>
+            <tr>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+            </tr>
+            <tr>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+            </tr>
+            <tr>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/1.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/2.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/2.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/3.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/3.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/4.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/4.png" draggable="true" ondragstart="drag(event)"></td>
+                <td ></td>
+                <td ondrop="drop(event)" ondragover="allowDrop(event)"><img id="drag1" src="asset/5.png" draggable="true" ondragstart="drag(event)"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+
+</body>
+</html>
+
+<script src="myMine.js"></script>
+<script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
+<script>
+    // Connect to Socket.IO server
+    const socket = io('https://fcae-49-0-87-150.ngrok-free.app');
+//     const io = new Server(server,{
+//     cors: {
+//       origin: "https://fcae-49-0-87-150.ngrok-free.app",
+//       methods: ["GET", "POST"]
+//     }
+//   });
+if (socket) {
+    console.log('socket : ',socket)
+}
+
+const form = document.getElementById('form');
+    const input = document.getElementById('input');
+
+
+socket.on("message", (data) => {
+console.log("Message from server:", data);
+
+const messages = document.getElementById('messages');
+const item = document.createElement('li');
+item.textContent = data;
+messages.appendChild(item);
+
+window.scrollTo(0, document.body.scrollHeight);
+});
+
+
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (input.value) {
+        // console.log(input.value)
+    //   socket.on('message', input.value);
+    socket.emit("message", input.value);
+    // socket.emit("message", "Hello from server!");
+
+
+      input.value = '';
+    }
+  });
+
+
+
+
+  socket.on("connection", (socket) => {
+    console.log("A user connected");
+    socket.emit("message", "Hello from server!");
+
+    socket.emit("message", (msg) => {
+console.log('msg',msg)
+    });
+    socket.on("disconnect", () => {
+        console.log("A user disconnected");
+    });
+});
+  
+</script>
