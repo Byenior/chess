@@ -47,3 +47,43 @@ td {
 tr {
     width: 400px;
 }
+
+.corp{
+    position: absolute;
+    top: 0;
+    right: -10px;
+    background: #6d6d6d31;
+    z-index: 9;
+    width: fit-content;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+p{
+    line-height: 10px;
+    margin: 5px;
+    padding: 0;
+}
+
+p:hover {
+    color : white
+}
+
+
+.batman {
+
+}
+.batman:hover {
+    transform: scaleX(-1);
+}
+
+.joker {
+
+}
+
+.joker:hover {
+    transform: scaleX(-1);
+}

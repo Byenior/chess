@@ -8,15 +8,17 @@ const ngrok = require("@ngrok/ngrok");
 const app = express();
 const server = http.createServer(app);
 // const io = new Server(server);
+const link = 'https://7519-49-0-87-150.ngrok-free.app';
+
 const io = new Server(server,{
     cors: {
-      origin: "https://fcae-49-0-87-150.ngrok-free.app",
+      origin: link,
       methods: ["GET", "POST"]
     }
   });
   
 app.use(cors({
-    origin: 'https://fcae-49-0-87-150.ngrok-free.app'
+    origin: link
 }));
 
 app.use(express.static(path.join(__dirname)));
@@ -46,7 +48,7 @@ server.listen(7777, () => {
 
 (async function () {
 	const listener = await ngrok.connect({
-		addr: 'https://fcae-49-0-87-150.ngrok-free.app',
+		addr: link,
 		authtoken: '2Ng1GDirVyNZ8rPhUgqhr78ZspR_4EvdRptmmcAK6y1K56kyL',
 	});
 
