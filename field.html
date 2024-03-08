@@ -15,7 +15,7 @@
       <h1>Chat</h1>
     </div>
 
-    <div id="roomChat">
+    <div id="roomChat" style="right: 2%; left: auto; top: 2%">
       <ul id="messages"></ul>
       <form id="form" action="">
         <input id="input" class="typeMassage" autocomplete="off" /><button>
@@ -112,8 +112,12 @@
 
     if (roomChat.style.right != "2%") {
       roomChat.style.right = "2%";
+      roomChat.style.left = "auto";
+      roomChat.style.top = "2%";
     } else {
       roomChat.style.right = "-100%";
+      roomChat.style.left = "auto";
+      roomChat.style.top = "2%";
     }
   }
 

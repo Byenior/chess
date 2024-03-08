@@ -10,13 +10,13 @@ const io = new Server(server);
 io.on("connection", (socket) => {
   console.log("A user connected");
 
-  socket.on("message", (msg) => {
+  socket.on("message", async (msg) => {
     // io.emit("message", msg);
-    addDataExcel("nior", msg);
-  });
+    await addDataExcel("nior", msg);
+    // });
 
-  socket.on("message", (msg) => {
-    pullLastRowFromExcel().then((data) => {
+    // socket.on("message", (msg) => {
+    await pullLastRowFromExcel().then((data) => {
       if (data) {
         console.log(data);
         io.emit("message", data);
@@ -51,7 +51,7 @@ async function createExcel() {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("chat"); // สร้างแผ่นข้อมูลใหม่หรือเลือกแผ่นที่มีอยู่แล้ว
   // เพิ่มข้อมูลลงในแถวแรก
-  worksheet.addRow(["Name", "Message", "Date"]);
+  // worksheet.addRow(["Name", "Message", "Date"]);
 
   // บันทึกไฟล์ Excel
   await workbook.xlsx.writeFile("data/data.xlsx");
@@ -80,7 +80,7 @@ async function addDataExcel(name, msg) {
   // Check if worksheet has any data
   if (worksheet.getRow(1).values.length === 0) {
     // If the first row is empty, add headers
-    worksheet.addRow(["Name", "Message", "Date"]);
+    // worksheet.addRow(["Name", "Message", "Date"]);
   }
 
   // Find the last row index
