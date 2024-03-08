@@ -8,103 +8,39 @@
   </head>
   <body>
     <div id="field">
-      <table border="1">
-        <tbody>
-          <tr>
-            <td id="1"></td>
-            <td id="2"></td>
-            <td id="3"></td>
-            <td id="4"></td>
-            <td id="5"></td>
-            <td id="6"></td>
-            <td id="7"></td>
-            <td id="8"></td>
-          </tr>
-          <tr>
-            <td id="9"></td>
-            <td id="10"></td>
-            <td id="11"></td>
-            <td id="12"></td>
-            <td id="13"></td>
-            <td id="14"></td>
-            <td id="15"></td>
-            <td id="16"></td>
-          </tr>
-
-          <tr>
-            <td id="17"></td>
-            <td id="18"></td>
-            <td id="19"></td>
-            <td id="20"></td>
-            <td id="21"></td>
-            <td id="22"></td>
-            <td id="23"></td>
-            <td id="24"></td>
-          </tr>
-          <tr>
-            <td id="25"></td>
-            <td id="26"></td>
-            <td id="27"></td>
-            <td id="28"></td>
-            <td id="29"></td>
-            <td id="30"></td>
-            <td id="31"></td>
-            <td id="32"></td>
-          </tr>
-          <tr>
-            <td id="33"></td>
-            <td id="34"></td>
-            <td id="35"></td>
-            <td id="36"></td>
-            <td id="37"></td>
-            <td id="38"></td>
-            <td id="39"></td>
-            <td id="40"></td>
-          </tr>
-          <tr>
-            <td id="41"></td>
-            <td id="42"></td>
-            <td id="43"></td>
-            <td id="44"></td>
-            <td id="45"></td>
-            <td id="46"></td>
-            <td id="47"></td>
-            <td id="48"></td>
-          </tr>
-          <tr>
-            <td id="49"></td>
-            <td id="50"></td>
-            <td id="51"></td>
-            <td id="52"></td>
-            <td id="53"></td>
-            <td id="54"></td>
-            <td id="55"></td>
-            <td id="56"></td>
-          </tr>
-          <tr>
-            <td id="57"></td>
-            <td id="58"></td>
-            <td id="59"></td>
-            <td id="60"></td>
-            <td id="61"></td>
-            <td id="62"></td>
-            <td id="63"></td>
-            <td id="64"></td>
-          </tr>
-        </tbody>
-      </table>
+      <table id="table-body" border="1"></table>
     </div>
 
-    <div id="chat">
+    <div id="chat" onclick="moveChat()">
       <h1>Chat</h1>
+    </div>
+
+    <div id="roomChat">
       <ul id="messages"></ul>
       <form id="form" action="">
-        <input id="input" autocomplete="off" /><button>Send</button>
+        <input id="input" class="typeMassage" autocomplete="off" /><button>
+          Send
+        </button>
       </form>
     </div>
   </body>
 </html>
-
+<script>
+  // create field
+  let scale = 16;
+  const tableBody = document.getElementById("table-body");
+  // Create scale rows
+  for (let i = 0; i < scale; i++) {
+    const row = document.createElement("tr");
+    // Create scale cells in the row
+    for (let j = 0; j < scale; j++) {
+      const cell = document.createElement("td");
+      cell.id = i * scale + j + 1;
+      row.appendChild(cell);
+    }
+    tableBody.appendChild(row);
+  }
+</script>
 <script
   src="https://cdn.socket.io/4.7.4/socket.io.min.js"
   integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
@@ -136,10 +72,83 @@
   });
 
   socket.on("message", (data) => {
-    console.log("data : ", data);
+    console.log("data from socket: ", data);
     const item = document.createElement("li");
-    item.textContent = data;
+    item.classList = "curved-arrow";
+
+    let div = document.createElement("div");
+    div.classList = "chatFrame";
+
+    let div_top = document.createElement("div");
+    div_top.style.display = "flex";
+    let div_bot = document.createElement("div");
+
+    let name = document.createElement("p");
+    name.innerHTML = data.name;
+    let message = document.createElement("p");
+    message.innerHTML = data.message;
+    let date = document.createElement("p");
+    date.innerHTML = data.date;
+
+    div_top.appendChild(name);
+    div_top.appendChild(date);
+
+    div_bot.appendChild(message);
+
+    div.appendChild(div_top);
+    div.appendChild(div_bot);
+
+    // item.textContent = div;
+    item.appendChild(div);
+
     messages.appendChild(item);
   });
 </script>
 <script src="myMine.js"></script>
+<script>
+  // chat
+  function moveChat() {
+    let roomChat = document.getElementById("roomChat");
+
+    if (roomChat.style.right != "2%") {
+      roomChat.style.right = "2%";
+    } else {
+      roomChat.style.right = "-100%";
+    }
+  }
+
+  var draggable = document.getElementById("messages");
+  var divMove = document.getElementById("roomChat");
+
+  var posX = 0,
+    posY = 0,
+    mouseX = 0,
+    mouseY = 0;
+
+  draggable.addEventListener("mousedown", mouseDown, false);
+  window.addEventListener("mouseup", mouseUp, false);
+
+  function mouseDown(e) {
+    e.preventDefault();
+    posX = e.clientX - divMove.offsetLeft;
+    posY = e.clientY - divMove.offsetTop;
+    window.addEventListener("mousemove", moveElement, false);
+  }
+
+  function mouseUp() {
+    window.removeEventListener("mousemove", moveElement, false);
+  }
+
+  function moveElement(e) {
+    mouseX = e.clientX - posX;
+    mouseY = e.clientY - posY;
+    divMove.style.left = mouseX + "px";
+    divMove.style.top = mouseY + "px";
+  }
+</script>
+<!-- <script src="https://apis.google.com/js/api.js"></script> -->
+
+<!-- <script type="module" src="data.js"></script>
+<script>
+  // init();
+</script> -->
