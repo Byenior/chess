@@ -1,181 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    
-<div id="field">
-
-    <table border="1">
-        <tbody>
-            <tr>
-                <td id="1" ></td>
-                <td id="2"></td>
-                <td id="3" >
-                <td id="4" ></td>
-                <td id="5" >
-                <td id="6" ></td>
-                <td id="7" >
-                <td id="8" ></td>
-            </tr>
-            <tr>
-                <td id="9" ></td>
-                <td id="10" >
-                <td id="11" ></td>
-                <td id="12" >
-                <td id="13" ></td>
-                <td id="14" >
-                <td id="15" ></td>
-                <td id="16" >
-            </tr>
-            <tr>
-                <td id="17" ></td>
-                <td id="18" ></td>
-                <td id="19" ></td>
-                <td id="20" ></td>
-                <td id="21" ></td>
-                <td id="22" ></td>
-                <td id="23" ></td>
-                <td id="24" ></td>
-            </tr>
-            <tr>
-                <td id="25" ></td>
-                <td id="26" ></td>
-                <td id="27" ></td>
-                <td id="28" ></td>
-                <td id="29" ></td>
-                <td id="30" ></td>
-                <td id="31" ></td>
-                <td id="32" ></td>
-            </tr>
-            <tr>
-                <td id="33" ></td>
-                <td id="34" ></td>
-                <td id="35" ></td>
-                <td id="36" ></td>
-                <td id="37" ></td>
-                <td id="38" ></td>
-                <td id="39" ></td>
-                <td id="40" ></td>
-            </tr>
-            <tr>
-                <td id="41" ></td>
-                <td id="42" ></td>
-                <td id="43" ></td>
-                <td id="44" ></td>
-                <td id="45" ></td>
-                <td id="46" ></td>
-                <td id="47" ></td>
-                <td id="48" ></td>
-            </tr>
-            <tr>
-                <td id="49" >
-                <td id="50" ></td>
-                <td id="51" >
-                <td id="52" ></td>
-                <td id="53" >
-                <td id="54" ></td>
-                <td id="55" >
-                <td id="56" ></td>
-            </tr>
-            <tr>
-                <td id="57" ></td>
-                <td id="58" >
-                <td id="59" ></td>
-                <td id="60" >
-                <td id="61" ></td>
-                <td id="62" >
-                <td id="63" ></td>
-                <td id="64" >
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-
-    <div id="chat">
-
-        <h1>Chat</h1>
-        <ul id="messages">
-        </ul>
-        <form id="form" action="">
-            <input id="input" autocomplete="off" /><button>Send</button>
-        </form>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="field">
+      <table id="table-body" border="1"></table>
     </div>
 
-</body>
+    <div id="chat" onclick="moveChat()">
+      <h1>Chat</h1>
+    </div>
+
+    <div id="roomChat" style="right: 2%; left: auto; top: 2%">
+      <ul id="messages"></ul>
+      <form id="form" action="">
+        <input id="input" class="typeMassage" autocomplete="off" /><button>
+          Send
+        </button>
+      </form>
+    </div>
+  </body>
 </html>
-
-<script src="myMine.js"></script>
-<script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
 <script>
-    // Connect to Socket.IO server
-    const link = 'http://localhost:7777/';
+  // create field
+  let scale = 16;
+  const tableBody = document.getElementById("table-body");
+  // Create scale rows
+  for (let i = 0; i < scale; i++) {
+    const row = document.createElement("tr");
+    // Create scale cells in the row
+    for (let j = 0; j < scale; j++) {
+      const cell = document.createElement("td");
+      cell.id = i * scale + j + 1;
+      row.appendChild(cell);
+    }
+    tableBody.appendChild(row);
+  }
+</script>
+<script
+  src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+  integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+  crossorigin="anonymous"
+></script>
+<script>
+  const form = document.getElementById("form");
+  const input = document.getElementById("input");
+  const messages = document.getElementById("messages");
 
-    const socket = io(link);
-//     const io = new Server(server,{
-//     cors: {
-//       origin: "https://fcae-49-0-87-150.ngrok-free.app",
-//       methods: ["GET", "POST"]
-//     }
-//   });
-if (socket) {
-    console.log('socket : ',socket)
-}
+  const link = "http://localhost:7777/";
+  const socket = io(link);
 
-const form = document.getElementById('form');
-const input = document.getElementById('input');
-
-
-
-
-
-
-  form.addEventListener('submit', (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
     if (input.value) {
-    console.log('from input : ',input.value)
-    //   socket.on('message', input.value);
-    socket.emit("message", input.value);
-    // socket.emit("message", "Hello from server!");
-
-
-      input.value = '';
+      console.log("from input : ", input.value);
+      socket.emit("message", input.value);
+      input.value = "";
     }
   });
 
+  socket.on("connect", () => {
+    console.log("Connected to server");
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Disconnected from server");
+  });
+
   socket.on("message", (data) => {
-    console.log('data : ',data)
-    const messages = document.getElementById('messages');
-    const item = document.createElement('li');
-    item.textContent = data;
+    console.log("data from socket: ", data);
+    const item = document.createElement("li");
+    item.classList = "curved-arrow";
+
+    let div = document.createElement("div");
+    div.classList = "chatFrame";
+
+    let div_top = document.createElement("div");
+    div_top.style.display = "flex";
+    let div_bot = document.createElement("div");
+
+    let name = document.createElement("p");
+    name.innerHTML = data.name;
+    let message = document.createElement("p");
+    message.innerHTML = data.message;
+    let date = document.createElement("p");
+    date.innerHTML = data.date;
+
+    div_top.appendChild(name);
+    div_top.appendChild(date);
+
+    div_bot.appendChild(message);
+
+    div.appendChild(div_top);
+    div.appendChild(div_bot);
+
+    // item.textContent = div;
+    item.appendChild(div);
+
     messages.appendChild(item);
-    // window.scrollTo(0, document.body.scrollHeight);
-    });
-
-
-  socket.on("connection", (socket) => {
-    console.log("A user connected");
-    socket.emit("message", "Hello from server!");
-
-//     socket.emit("message", (msg) => {
-// console.log('msg',msg)
-//     });
-
-
-    // socket.on("message", (msg) => {
-    //     // socket.emit("message", msg);
-    // });
-
-
-
-    socket.on("disconnect", () => {
-        console.log("A user disconnected");
-    });
-});
-  
+  });
 </script>
+<script src="myMine.js"></script>
+<script>
+  // chat
+  function moveChat() {
+    let roomChat = document.getElementById("roomChat");
+
+    if (roomChat.style.right != "2%") {
+      roomChat.style.right = "2%";
+      roomChat.style.left = "auto";
+      roomChat.style.top = "2%";
+    } else {
+      roomChat.style.right = "-100%";
+      roomChat.style.left = "auto";
+      roomChat.style.top = "2%";
+    }
+  }
+
+  var draggable = document.getElementById("messages");
+  var divMove = document.getElementById("roomChat");
+
+  var posX = 0,
+    posY = 0,
+    mouseX = 0,
+    mouseY = 0;
+
+  draggable.addEventListener("mousedown", mouseDown, false);
+  window.addEventListener("mouseup", mouseUp, false);
+
+  function mouseDown(e) {
+    e.preventDefault();
+    posX = e.clientX - divMove.offsetLeft;
+    posY = e.clientY - divMove.offsetTop;
+    window.addEventListener("mousemove", moveElement, false);
+  }
+
+  function mouseUp() {
+    window.removeEventListener("mousemove", moveElement, false);
+  }
+
+  function moveElement(e) {
+    mouseX = e.clientX - posX;
+    mouseY = e.clientY - posY;
+    divMove.style.left = mouseX + "px";
+    divMove.style.top = mouseY + "px";
+  }
+</script>
+<!-- <script src="https://apis.google.com/js/api.js"></script> -->
+
+<!-- <script type="module" src="data.js"></script>
+<script>
+  // init();
+</script> -->
