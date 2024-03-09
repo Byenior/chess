@@ -12,13 +12,14 @@ io.on("connection", (socket) => {
 
   socket.on("message", async (msg) => {
     // io.emit("message", msg);
-    await addDataExcel("nior", msg);
+    console.log("msg : ", msg);
+    await addDataExcel(msg.player, msg.msg);
     // });
 
     // socket.on("message", (msg) => {
     await pullLastRowFromExcel().then((data) => {
       if (data) {
-        console.log(data);
+        console.log("data : ", data);
         io.emit("message", data);
       }
     });

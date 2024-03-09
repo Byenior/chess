@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Weird Chess</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="chat.css" />
   </head>
   <body>
     <div id="field">
@@ -15,10 +16,22 @@
       <h1>Chat</h1>
     </div>
 
-    <div id="roomChat" style="right: 2%; left: auto; top: 2%">
+    <div id="roomChat" style="right: -100%; left: auto; top: 2%">
       <ul id="messages"></ul>
-      <form id="form" action="">
-        <input id="input" class="typeMassage" autocomplete="off" />
+      <form id="login" action="">
+        <input
+          id="login_input"
+          class="typeMassage"
+          autocomplete="off"
+          placeholder="Press name"
+        />
+
+        <button class="button-64">
+          <span>login</span>
+        </button>
+      </form>
+      <form id="form" action="" style="display: none">
+        <input id="form_input" class="typeMassage" autocomplete="off" />
         <button class="button-64">
           <span>Send</span>
         </button>
@@ -27,21 +40,9 @@
   </body>
 </html>
 <script>
-  // create field
-  let scale = 16;
-  const tableBody = document.getElementById("table-body");
-  // Create scale rows
-  for (let i = 0; i < scale; i++) {
-    const row = document.createElement("tr");
-    // Create scale cells in the row
-    for (let j = 0; j < scale; j++) {
-      const cell = document.createElement("td");
-      cell.id = i * scale + j + 1;
-      row.appendChild(cell);
-    }
-    tableBody.appendChild(row);
-  }
+  let scale = 81;
 </script>
+<script src="setupMap.js"></script>
 <script
   src="https://cdn.socket.io/4.7.4/socket.io.min.js"
   integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
@@ -49,18 +50,48 @@
 ></script>
 <script>
   const form = document.getElementById("form");
+  const login_input = document.getElementById("login_input");
   const input = document.getElementById("input");
+  const form_input = document.getElementById("form_input");
   const messages = document.getElementById("messages");
-
+  let player;
   const link = "http://localhost:7777/";
   const socket = io(link);
 
+  login.addEventListener("submit", (e) => {
+    e.preventDefault();
+    console.log("login");
+
+    if (login_input.value) {
+      player = login_input.value;
+      // var data = {
+      //   key: player,
+      //   value: login_input.value,
+      // };
+      // socket.emit("message", data);
+
+      login_input.value = "";
+
+      login.style.display = "none";
+      form.style.display = "flex";
+
+      console.log("login : ", player);
+    }
+  });
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (input.value) {
-      console.log("from input : ", input.value);
-      socket.emit("message", input.value);
-      input.value = "";
+    console.log("send");
+    if (form_input.value) {
+      var data = {
+        player: player,
+        msg: form_input.value,
+      };
+      console.log("send to socket : ", data);
+
+      socket.emit("message", data);
+
+      form_input.value = "";
     }
   });
 
@@ -71,89 +102,6 @@
   socket.on("disconnect", () => {
     console.log("Disconnected from server");
   });
-
-  socket.on("message", (data) => {
-    console.log("data from socket: ", data);
-    const item = document.createElement("li");
-    item.classList = "curved-arrow";
-
-    let div = document.createElement("div");
-    div.classList = "chatFrame";
-
-    let div_top = document.createElement("div");
-    div_top.style.display = "flex";
-    let div_bot = document.createElement("div");
-
-    let name = document.createElement("p");
-    name.innerHTML = data.name;
-    let message = document.createElement("p");
-    message.innerHTML = data.message;
-    let date = document.createElement("p");
-    date.innerHTML = data.date;
-
-    div_top.appendChild(name);
-    div_top.appendChild(date);
-
-    div_bot.appendChild(message);
-
-    div.appendChild(div_top);
-    div.appendChild(div_bot);
-
-    // item.textContent = div;
-    item.appendChild(div);
-
-    messages.appendChild(item);
-  });
 </script>
 <script src="myMine.js"></script>
-<script>
-  // chat
-  function moveChat() {
-    let roomChat = document.getElementById("roomChat");
-
-    if (roomChat.style.right != "2%") {
-      roomChat.style.right = "2%";
-      roomChat.style.left = "auto";
-      roomChat.style.top = "2%";
-    } else {
-      roomChat.style.right = "-100%";
-      roomChat.style.left = "auto";
-      roomChat.style.top = "2%";
-    }
-  }
-
-  var draggable = document.getElementById("messages");
-  var divMove = document.getElementById("roomChat");
-
-  var posX = 0,
-    posY = 0,
-    mouseX = 0,
-    mouseY = 0;
-
-  draggable.addEventListener("mousedown", mouseDown, false);
-  window.addEventListener("mouseup", mouseUp, false);
-
-  function mouseDown(e) {
-    e.preventDefault();
-    posX = e.clientX - divMove.offsetLeft;
-    posY = e.clientY - divMove.offsetTop;
-    window.addEventListener("mousemove", moveElement, false);
-  }
-
-  function mouseUp() {
-    window.removeEventListener("mousemove", moveElement, false);
-  }
-
-  function moveElement(e) {
-    mouseX = e.clientX - posX;
-    mouseY = e.clientY - posY;
-    divMove.style.left = mouseX + "px";
-    divMove.style.top = mouseY + "px";
-  }
-</script>
-<!-- <script src="https://apis.google.com/js/api.js"></script> -->
-
-<!-- <script type="module" src="data.js"></script>
-<script>
-  // init();
-</script> -->
+<script src="chat.js"></script>

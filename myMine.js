@@ -14,7 +14,7 @@ tds.forEach((td) => {
     } else {
       socket.emit("action", corp, body);
       socket.on("action", corp, body);
-    }
+    } //
   });
 });
 
